@@ -316,18 +316,16 @@ HomeAssistantLight.prototype = {
 
     serviceData.brightness = 255 * (level / 100.0);
 
-    // To make sure setBrightness is done after the setPowerState
-    setTimeout(() => {
-      this.log(`Setting brightness on the '${this.name}' to ${level}`);
-      this.client.callService(this.domain, 'turn_on', serviceData, (data) => {
-        if (data) {
-          that.log(`Successfully set brightness on the '${that.name}' to ${level}`);
-          callback();
-        } else {
-          callback(communicationError);
-        }
-      });
-    }, 800);
+    this.log(`Setting brightness on the '${this.name}' to ${level}`);
+    
+    this.client.callService(this.domain, 'turn_on', serviceData, (data) => {
+    if (data) {
+        that.log(`Successfully set brightness on the '${that.name}' to ${level}`);
+        callback();
+    } else {
+        callback(communicationError);
+    }
+    });
   },
   setHue(level, callback, context) {
     if (context === 'internal') {
